@@ -1,0 +1,56 @@
+spring:
+  profiles:
+    active: dev
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: jdbc:mysql://localhost:3307/authdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: authuser
+    password: authpass
+
+  jpa:
+    hibernate:
+      ddl-auto: validate   # Flyway sẽ tạo schema; ở bước 1 tạm để 'none' nếu chưa tạo migration
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: false   # Bước 2 sẽ bật và thêm migration
+
+server:
+  port: 8080
+  error:
+    include-message: always
+
+# CORS tạm thời mở localhost:5173 (Vite) + 3000 (React CRA)
+app:
+  cors:
+    allowed-origins:
+      - "http://localhost:5173"
+      - "http://localhost:3000"
+    allowed-methods: "GET,POST,PUT,PATCH,DELETE,OPTIONS"
+    allowed-headers: "*"
+    allow-credentials: true
+
+auth:
+  jwt:
+    issuer: "your-app"
+    # Đặt secret >= 32 bytes. Tạm để demo; thực tế đọc từ ENV.
+    secret: "change-me-change-me-change-me-change-me-32b"
+    access-token-ttl: "PT15M"  # 15 phút
+    refresh-token-ttl: "P30D"  # 30 ngày
+    clock-skew: "PT30S"       # 30s leeway
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
