@@ -1,35 +1,28 @@
 package pcshop.pcshop.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.reactive.CorsConfigurationSource;
-import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
-
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.List;
 
 @Configuration
 public class CorsConfig {
-    @Value("#{'${app.cors.allowed-origins}'.split(',')}")
-    private List<String> allowedOrigins;
 
-    @Value("${app.cors.allowed-methods}")
-    private String allowedMethods;
+    private final CorsProps props;
 
-    @Value("${app.cors.allowed-headers}")
-    private String allowedHeaders;
-
-    @Value("${app.cors.allow-credentials:true}")
-    private boolean allowCredentials;
+    public CorsConfig(CorsProps props){
+        this.props = props;
+    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cfg = new CorsConfiguration();
-        cfg.setAllowedOrigins(allowedOrigins);
-        cfg.setAllowedMethods(List.of(allowedMethods.split(",")));
-        cfg.setAllowedHeaders(List.of(allowedHeaders.split(",")));
-        cfg.setAllowCredentials(allowCredentials);
+        cfg.setAllowedOrigins(props.getAllowedOrigins());
+        cfg.setAllowedMethods(List.of(props.getAllowedMethods().split(",")));
+        cfg.setAllowedHeaders(List.of(props.getAllowedHeaders().split(",")));
+        cfg.setAllowCredentials(props.isAllowCredentials());
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", cfg);

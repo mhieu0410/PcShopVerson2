@@ -23,7 +23,8 @@ spring:
         format_sql: true
 
   flyway:
-    enabled: false   # Bước 2 sẽ bật và thêm migration
+    enabled: true   # Bước 2 sẽ bật và thêm migration
+    locations: classpath:db/migration
 
 server:
   port: 8080
