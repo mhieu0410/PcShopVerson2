@@ -16,12 +16,14 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                        .ignoringRequestMatchers("/health","/v3/api-docs/**","/swagger-ui/**")
+                        .ignoringRequestMatchers("/health","/v3/api-docs/**","/swagger-ui/**","/api/auth/**"
+                        )
                 )
                 .cors(Customizer.withDefaults())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/health","/v3/api-docs/**","/swagger-ui/**").permitAll()
+                        .requestMatchers("/api/auth/register","/api/auth/verify-email").permitAll()
                         .anyRequest().authenticated()
                 )
                 .headers(h -> h

@@ -8,6 +8,15 @@ spring:
     activate:
       on-profile: dev
 
+  mail:
+    host: localhost
+    port: 1025
+    username: ""
+    password: ""
+    properties:
+      mail.smtp.auth: false
+      mail.smtp.starttls.enable: false
+
   datasource:
     url: jdbc:mysql://localhost:3307/authdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
     username: authuser
